@@ -9,21 +9,25 @@ import com.penghaonan.appframework.reporter.Reporter;
 
 public class AppDelegate {
 
-    private static AppDelegate sApp;
+    private static AppDelegate sInstance;
     private Handler mHandler;
     private Context mAppContext;
+
+    public static AppDelegate init(Application application) {
+        sInstance = new AppDelegate();
+        sInstance.mAppContext = application;
+        return sInstance;
+    }
 
     public static Context getApp() {
         return getInstance().mAppContext;
     }
 
     public static AppDelegate getInstance() {
-        return sApp;
+        return sInstance;
     }
 
-    public void onCreate(Application application) {
-        sApp = this;
-        mAppContext = application;
+    public void onCreate() {
         mHandler = new Handler(Looper.getMainLooper());
         Reporter.init();
     }

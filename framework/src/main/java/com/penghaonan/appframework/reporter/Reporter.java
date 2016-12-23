@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
-import com.penghaonan.appbackup.framework.App;
+import com.penghaonan.appframework.AppDelegate;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Reporter implements IReporter {
 
     private Reporter() {
         mReporters.add(new FirebaseReporter());
-        setChannel(getChannel(App.getApp()));
+        setChannel(getChannel(AppDelegate.getApp()));
     }
 
     public static void init() {
