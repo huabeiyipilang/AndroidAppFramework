@@ -16,8 +16,10 @@ public class MultiSelectHelper {
         checkedArray.put(position, checked);
     }
 
-    public void toggleChecked(int position) {
-        setChecked(position, !isChecked(position));
+    public boolean toggleChecked(int position) {
+        boolean toChecked = !isChecked(position);
+        setChecked(position, toChecked);
+        return toChecked;
     }
 
     public boolean isChecked(int position) {
