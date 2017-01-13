@@ -7,13 +7,39 @@ import java.util.Collection;
 
 public class MultiSelectHelper {
     private SparseBooleanArray checkedArray;
+    private SelectChangedListener listener;
 
-    public MultiSelectHelper() {
+    public interface SelectChangedListener {
+        void onSelectChanged();
+    }
+
+    public MultiSelectHelper(SelectChangedListener listener) {
+        this.listener = listener;
         checkedArray = new SparseBooleanArray();
     }
 
     public void setChecked(int position, boolean checked) {
-        checkedArray.put(position, checked);
+        if (checked) {
+            if (!contains(position)) {
+                checkedArray.put(position, true);
+                notifySelectChanged();
+            }
+        } else {
+            if (contains(position)) {
+                checkedArray.delete(position);
+                notifySelectChanged();
+            }
+        }
+    }
+
+    private void notifySelectChanged() {
+        if (listener != null) {
+            listener.onSelectChanged();
+        }
+    }
+
+    private boolean contains(int position) {
+        return checkedArray.indexOfKey(position) >= 0;
     }
 
     public boolean toggleChecked(int position) {
@@ -24,6 +50,10 @@ public class MultiSelectHelper {
 
     public boolean isChecked(int position) {
         return checkedArray.get(position, false);
+    }
+
+    public int checkedSize() {
+        return checkedArray.size();
     }
 
     public void iterator(Collection data, @NonNull Iterator iterator) {
