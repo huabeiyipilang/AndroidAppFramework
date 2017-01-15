@@ -36,6 +36,18 @@ public class MultiSelectHelper {
         }
     }
 
+    public void checkAll(int count) {
+        synchronized (checkedArray) {
+            boolean notifyChanged = checkedArray.size() == count;
+            for (int i = 0; i < count; i++) {
+                checkedArray.add(i);
+            }
+            if (notifyChanged) {
+                notifySelectChanged();
+            }
+        }
+    }
+
     private void notifySelectChanged() {
         if (listener != null) {
             listener.onSelectChanged();
@@ -76,7 +88,14 @@ public class MultiSelectHelper {
 
     public void clear() {
         synchronized (checkedArray) {
+            boolean notifyChanged = false;
+            if (checkedArray.size() > 0) {
+                notifyChanged = true;
+            }
             checkedArray.clear();
+            if (notifyChanged) {
+                notifySelectChanged();
+            }
         }
     }
 
