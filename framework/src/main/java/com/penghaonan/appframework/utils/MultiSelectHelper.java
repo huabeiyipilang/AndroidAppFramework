@@ -23,7 +23,7 @@ public class MultiSelectHelper<T> {
         this.listener = listener;
     }
 
-    public void setChecked(int position, boolean checked) {
+    public void setChecked(Integer position, boolean checked) {
         synchronized (checkedArray) {
             if (checked) {
                 if (!checkedArray.contains(position)) {
@@ -70,7 +70,7 @@ public class MultiSelectHelper<T> {
         }
     }
 
-    public boolean isChecked(int position) {
+    public boolean isChecked(Integer position) {
         synchronized (checkedArray) {
             return checkedArray.contains(position);
         }
