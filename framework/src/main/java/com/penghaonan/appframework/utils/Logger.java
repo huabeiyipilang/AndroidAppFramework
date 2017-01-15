@@ -11,7 +11,29 @@ public class Logger {
         Log.e(tag, msg);
     }
 
+    public static void i(String msg) {
+        i(autoTag(), msg);
+    }
+
     public static void e(Exception e) {
         e.printStackTrace();
+    }
+
+    private static String autoTag() {
+        StackTraceElement[] elements = new Throwable().getStackTrace();
+        String loggerClsName = Logger.class.getSimpleName();
+
+        for (int i = 1; i < elements.length; i++) {
+            String fileName = getFileName(elements[i]);
+            if (!loggerClsName.equals(fileName)){
+                return fileName;
+            }
+        }
+        return "unknown";
+    }
+
+    private static String getFileName(StackTraceElement element) {
+        String fileName = element.getFileName();
+        return fileName.substring(0, fileName.indexOf("."));
     }
 }

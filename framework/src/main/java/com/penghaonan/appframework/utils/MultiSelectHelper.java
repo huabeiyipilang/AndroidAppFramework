@@ -4,9 +4,12 @@ import android.support.annotation.NonNull;
 import android.util.SparseBooleanArray;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MultiSelectHelper {
-    private SparseBooleanArray checkedArray;
+    private final List<Integer> checkedArray = new LinkedList<>();
     private SelectChangedListener listener;
 
     public interface SelectChangedListener {
@@ -15,19 +18,20 @@ public class MultiSelectHelper {
 
     public MultiSelectHelper(SelectChangedListener listener) {
         this.listener = listener;
-        checkedArray = new SparseBooleanArray();
     }
 
     public void setChecked(int position, boolean checked) {
-        if (checked) {
-            if (!contains(position)) {
-                checkedArray.put(position, true);
-                notifySelectChanged();
-            }
-        } else {
-            if (contains(position)) {
-                checkedArray.delete(position);
-                notifySelectChanged();
+        synchronized (checkedArray) {
+            if (checked) {
+                if (!checkedArray.contains(position)) {
+                    checkedArray.add(position);
+                    notifySelectChanged();
+                }
+            } else {
+                if (checkedArray.contains(position)) {
+                    checkedArray.remove(position);
+                    notifySelectChanged();
+                }
             }
         }
     }
@@ -38,37 +42,42 @@ public class MultiSelectHelper {
         }
     }
 
-    private boolean contains(int position) {
-        return checkedArray.indexOfKey(position) >= 0;
-    }
-
     public boolean toggleChecked(int position) {
-        boolean toChecked = !isChecked(position);
-        setChecked(position, toChecked);
-        return toChecked;
+        synchronized (checkedArray) {
+            boolean toChecked = !isChecked(position);
+            setChecked(position, toChecked);
+            return toChecked;
+        }
     }
 
     public boolean isChecked(int position) {
-        return checkedArray.get(position, false);
+        synchronized (checkedArray) {
+            return checkedArray.contains(position);
+        }
     }
 
     public int checkedSize() {
-        return checkedArray.size();
+        synchronized (checkedArray) {
+            return checkedArray.size();
+        }
     }
 
-    public void iterator(Collection data, @NonNull Iterator iterator) {
-
-        java.util.Iterator iterator1 = data.iterator();
-        int i = 0;
-        while (iterator1.hasNext()) {
-            if (isChecked(i)) {
-                iterator.onNext(iterator1.next());
+    public void iterator(@NonNull Collection data, @NonNull Iterator iterator, boolean sort) {
+        synchronized (checkedArray) {
+            if (sort) {
+                Collections.sort(checkedArray);
+            }
+            Object[] array = data.toArray();
+            for (Integer pos : checkedArray) {
+                iterator.onNext(array[pos]);
             }
         }
     }
 
     public void clear() {
-        checkedArray.clear();
+        synchronized (checkedArray) {
+            checkedArray.clear();
+        }
     }
 
     public interface Iterator<T> {
