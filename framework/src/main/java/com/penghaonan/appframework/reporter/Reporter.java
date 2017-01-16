@@ -31,6 +31,12 @@ public class Reporter implements IReporter {
         return sInstance;
     }
 
+    public void addReporter(IReporter reporter) {
+        if (!mReporters.contains(reporter)) {
+            mReporters.add(reporter);
+        }
+    }
+
     private String getChannel(Context context) {
         try {
             PackageManager pm = context.getPackageManager();
