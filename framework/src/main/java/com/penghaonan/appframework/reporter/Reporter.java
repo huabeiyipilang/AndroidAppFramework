@@ -9,18 +9,21 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.penghaonan.appframework.AppDelegate;
+import com.penghaonan.appframework.utils.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ */
 public class Reporter implements IReporter {
 
     private static Reporter sInstance;
-    private List<IReporter> mReporters = new LinkedList<>();
+    private final List<IReporter> mReporters = new LinkedList<>();
 
     private Reporter() {
         mReporters.add(new FirebaseReporter());
-        setChannel(getChannel(AppDelegate.getApp()));
     }
 
     public static void init() {
@@ -32,8 +35,17 @@ public class Reporter implements IReporter {
     }
 
     public void addReporter(IReporter reporter) {
-        if (!mReporters.contains(reporter)) {
-            mReporters.add(reporter);
+        synchronized (mReporters) {
+            if (reporter == null) {
+                Logger.e("addReporter: reporter is null");
+                return;
+            }
+            if (mReporters.contains(reporter)) {
+                Logger.e("addReporter: reporter is null");
+            } else {
+                mReporters.add(reporter);
+                setChannel(getChannel(AppDelegate.getApp()));
+            }
         }
     }
 
@@ -44,42 +56,53 @@ public class Reporter implements IReporter {
             return appInfo.metaData.getString("apk_channel");
         } catch (PackageManager.NameNotFoundException ignored) {
         }
-        return "";
+        return "unknown";
     }
 
     public void onActivityResume(@NonNull Activity activity) {
-        for (IReporter reporter : mReporters) {
-            reporter.onActivityResume(activity);
+
+        synchronized (mReporters) {
+            for (IReporter reporter : mReporters) {
+                reporter.onActivityResume(activity);
+            }
         }
     }
 
     public void onActivityPause(@NonNull Activity activity) {
-        for (IReporter reporter : mReporters) {
-            reporter.onActivityPause(activity);
+        synchronized (mReporters) {
+            for (IReporter reporter : mReporters) {
+                reporter.onActivityPause(activity);
+            }
         }
     }
 
     @Override
     public void onFragmentResume(@NonNull Fragment fragment) {
-        for (IReporter reporter : mReporters) {
-            reporter.onFragmentResume(fragment);
+        synchronized (mReporters) {
+            for (IReporter reporter : mReporters) {
+                reporter.onFragmentResume(fragment);
+            }
         }
     }
 
     @Override
     public void onFragmentPause(@NonNull Fragment fragment) {
-        for (IReporter reporter : mReporters) {
-            reporter.onFragmentPause(fragment);
+        synchronized (mReporters) {
+            for (IReporter reporter : mReporters) {
+                reporter.onFragmentPause(fragment);
+            }
         }
     }
 
     @Override
     public void setChannel(String channel) {
-        if (TextUtils.isEmpty(channel)) {
-            return;
-        }
-        for (IReporter reporter : mReporters) {
-            reporter.setChannel(channel);
+        synchronized (mReporters) {
+            if (TextUtils.isEmpty(channel)) {
+                return;
+            }
+            for (IReporter reporter : mReporters) {
+                reporter.setChannel(channel);
+            }
         }
     }
 
