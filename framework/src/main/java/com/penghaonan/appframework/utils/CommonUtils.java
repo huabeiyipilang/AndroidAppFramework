@@ -1,16 +1,26 @@
 package com.penghaonan.appframework.utils;
 
-import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class CommonUtils {
-    public static void checkPermission(Activity activity) {
-        if (activity == null) {
+    public static void checkPermission(Activity activity, List<String> permissions) {
+        if (activity == null || CollectionUtils.isEmpty(permissions)) {
             return;
         }
-        ActivityCompat.requestPermissions(activity,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                1);
+        Iterator<String> iterator = permissions.iterator();
+        while (iterator.hasNext()) {
+            String permission = iterator.next();
+            if (ActivityCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED) {
+                iterator.remove();
+            }
+        }
+        if (!CollectionUtils.isEmpty(permissions)) {
+            ActivityCompat.requestPermissions(activity, (String[]) permissions.toArray(),1);
+        }
     }
 }
