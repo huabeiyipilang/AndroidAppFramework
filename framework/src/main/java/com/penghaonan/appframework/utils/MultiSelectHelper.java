@@ -56,6 +56,10 @@ public class MultiSelectHelper<T> {
         return checkedArray.size() == count;
     }
 
+    public boolean isAllUnchecked() {
+        return checkedArray.size() == 0;
+    }
+
     private void notifySelectChanged() {
         if (listener != null) {
             listener.onSelectChanged();
