@@ -33,4 +33,9 @@ public interface IReporter {
      * 框架调用（需继承BaseFrameworkFragment）
      */
     void onFragmentPause(@NonNull Fragment fragment);
+
+    /**
+     * 计数事件
+     */
+    void onEvent(String eventId);
 }

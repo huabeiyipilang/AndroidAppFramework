@@ -95,6 +95,16 @@ public class Reporter implements IReporter {
     }
 
     @Override
+    public void onEvent(String eventId) {
+        synchronized (mReporters) {
+            Logger.i("onEvent:" + eventId);
+            for (IReporter reporter : mReporters) {
+                reporter.onEvent(eventId);
+            }
+        }
+    }
+
+    @Override
     public void setChannel(String channel) {
         synchronized (mReporters) {
             if (TextUtils.isEmpty(channel)) {

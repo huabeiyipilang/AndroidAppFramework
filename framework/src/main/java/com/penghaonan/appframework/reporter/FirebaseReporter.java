@@ -12,6 +12,11 @@ class FirebaseReporter implements IReporter {
     private FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(AppDelegate.getApp());
 
     @Override
+    public void setChannel(String channel) {
+        mFirebaseAnalytics.setUserProperty("channel", channel);
+    }
+
+    @Override
     public void onActivityResume(@NonNull Activity activity) {
         mFirebaseAnalytics.setCurrentScreen(activity, activity.getClass().getSimpleName(), null);
     }
@@ -36,7 +41,7 @@ class FirebaseReporter implements IReporter {
     }
 
     @Override
-    public void setChannel(String channel) {
-        mFirebaseAnalytics.setUserProperty("channel", channel);
+    public void onEvent(String eventId) {
+
     }
 }
