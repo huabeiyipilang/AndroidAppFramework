@@ -53,7 +53,7 @@ public class MultiSelectHelper<T> {
     }
 
     public boolean isAllChecked(int count) {
-        return checkedArray.size() == count;
+        return count > 0 && checkedArray.size() == count;
     }
 
     public boolean isAllUnchecked() {
