@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.penghaonan.appframework.AppDelegate;
 import com.penghaonan.appframework.utils.Logger;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -100,6 +101,26 @@ public class Reporter implements IReporter {
             Logger.i("onEvent:" + eventId);
             for (IReporter reporter : mReporters) {
                 reporter.onEvent(eventId);
+            }
+        }
+    }
+
+    @Override
+    public void onEvent(String eventId, String value) {
+        synchronized (mReporters) {
+            Logger.i("onEvent:" + eventId + ", value:" + value);
+            for (IReporter reporter : mReporters) {
+                reporter.onEvent(eventId, value);
+            }
+        }
+    }
+
+    @Override
+    public void onEvent(String eventId, HashMap<String, String> values) {
+        synchronized (mReporters) {
+            Logger.i("onEvent:" + eventId + ", with values");
+            for (IReporter reporter : mReporters) {
+                reporter.onEvent(eventId, values);
             }
         }
     }

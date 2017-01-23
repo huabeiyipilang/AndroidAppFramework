@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import java.util.HashMap;
+
 /**
  * 客户端自定义上报，需实现此接口
  * Reporter.getInstance().addReporter()
@@ -38,4 +40,14 @@ public interface IReporter {
      * 计数事件
      */
     void onEvent(String eventId);
+
+    /**
+     * 计数事件
+     */
+    void onEvent(String eventId, String value);
+
+    /**
+     * 计数事件
+     */
+    void onEvent(String eventId, HashMap<String, String> values);
 }

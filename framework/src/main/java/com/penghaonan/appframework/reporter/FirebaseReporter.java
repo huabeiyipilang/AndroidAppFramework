@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.penghaonan.appframework.AppDelegate;
 
+import java.util.HashMap;
+
 class FirebaseReporter implements IReporter {
 
     private FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(AppDelegate.getApp());
@@ -42,6 +44,16 @@ class FirebaseReporter implements IReporter {
 
     @Override
     public void onEvent(String eventId) {
+
+    }
+
+    @Override
+    public void onEvent(String eventId, String value) {
+
+    }
+
+    @Override
+    public void onEvent(String eventId, HashMap<String, String> values) {
 
     }
 }
