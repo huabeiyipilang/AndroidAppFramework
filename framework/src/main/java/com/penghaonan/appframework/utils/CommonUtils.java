@@ -20,7 +20,7 @@ public class CommonUtils {
             }
         }
         if (!CollectionUtils.isEmpty(permissions)) {
-            ActivityCompat.requestPermissions(activity, (String[]) permissions.toArray(),1);
+            ActivityCompat.requestPermissions(activity, permissions.toArray(new String[0]),1);
         }
     }
 }
