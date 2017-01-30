@@ -31,4 +31,12 @@ public class GlobalConfig {
     public static String getString(String key, String def) {
         return sPref.getString(key, def);
     }
+
+    public static void put(String key, long value) {
+        sPref.edit().putLong(key, value).apply();
+    }
+
+    public static long getLong(String key, long def) {
+        return sPref.getLong(key, def);
+    }
 }
