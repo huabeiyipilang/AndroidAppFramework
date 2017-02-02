@@ -10,4 +10,14 @@ public class CollectionUtils {
     public static int size(Collection collection) {
         return collection == null ? 0 : collection.size();
     }
+
+    /**
+     * 避免使用Collection.addAll()的时候，参数为null的问题
+     */
+    public static <T> void addAll(Collection<T> parent, Collection<T> child) {
+        if (parent == null || child == null) {
+            return;
+        }
+        parent.addAll(child);
+    }
 }
