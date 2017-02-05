@@ -2,6 +2,7 @@ package com.penghaonan.appframework;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -99,4 +100,15 @@ public class AppDelegate {
         getInstance().mHandler.removeCallbacks(runnable);
     }
 
+    /**
+     * 打开activity
+     */
+    public static void startActivity(Class<? extends Activity> activityCls, Bundle bundle) {
+        Intent intent = new Intent(getApp(), activityCls);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        getApp().startActivity(intent);
+    }
 }
