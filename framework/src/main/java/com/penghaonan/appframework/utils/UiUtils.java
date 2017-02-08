@@ -2,7 +2,6 @@ package com.penghaonan.appframework.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
@@ -42,25 +41,23 @@ public class UiUtils {
     /**
      * 设置StatusBar颜色
      */
-    public static void initActivityStatusNavigationBarColor(Activity activity, int color) {
-        initActivityStatusNavigationBarColor(activity,
-                AppDelegate.getApp().getResources().getColor(color),
-                Color.BLACK);
+    public static void initActivityStatusNavigationBarColor(Activity activity, int colorRes) {
+        initActivityStatusNavigationBarColor(activity, colorRes, android.R.color.black);
     }
 
     /**
      * 设置StatusBar， NavigationBar颜色
      */
-    public static void initActivityStatusNavigationBarColor(Activity activity, int sta_color, int nav_color) {
+    public static void initActivityStatusNavigationBarColor(Activity activity, int sta_color_resId, int nav_color_resId) {
         if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            if (sta_color != 0) {
-                window.setStatusBarColor(sta_color);
+            if (sta_color_resId != 0) {
+                window.setStatusBarColor(AppDelegate.getApp().getResources().getColor(sta_color_resId));
             }
-            if (nav_color != 0) {
-                window.setNavigationBarColor(nav_color);
+            if (nav_color_resId != 0) {
+                window.setNavigationBarColor(AppDelegate.getApp().getResources().getColor(nav_color_resId));
             }
             ViewGroup mContentView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
             View mChildView = mContentView.getChildAt(0);
