@@ -73,6 +73,13 @@ public class AppDelegate {
     }
 
     /**
+     * 获取字符串
+     */
+    public static String getString(int resId) {
+        return getApp().getString(resId);
+    }
+
+    /**
      * 获取单例实例
      */
     public static AppDelegate getInstance() {
