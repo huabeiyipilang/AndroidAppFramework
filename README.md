@@ -2,6 +2,7 @@
 
 
 在项目根目录下执行
+
 	git submodule add https://github.com/huabeiyipilang/AndroidAppFramework.git submodules/framework
 
 
@@ -21,3 +22,7 @@ setting.gradle
     compile project(':framework')
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+Application类onCreate中
+
+    AppDelegate.init(this);

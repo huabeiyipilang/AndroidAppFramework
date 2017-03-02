@@ -2,9 +2,11 @@ package com.penghaonan.appframework.utils;
 
 import android.util.Log;
 
+import com.penghaonan.appframework.BuildConfig;
+
 public class Logger {
-    private static boolean enable;
     private final static String DEF_TAG = Logger.class.getSimpleName();
+    private static boolean enable = BuildConfig.DEBUG;
 
     public static void setEnable(boolean enable) {
         Logger.enable = enable;
