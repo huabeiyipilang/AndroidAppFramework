@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.penghaonan.appframework.reporter.Reporter;
+import com.penghaonan.appframework.utils.Logger;
 
 public class AppDelegate {
 
