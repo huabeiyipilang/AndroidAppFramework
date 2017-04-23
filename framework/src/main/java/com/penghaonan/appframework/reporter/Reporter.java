@@ -24,7 +24,6 @@ public class Reporter implements IReporter {
     private final List<IReporter> mReporters = new LinkedList<>();
 
     private Reporter() {
-        mReporters.add(new FirebaseReporter());
     }
 
     public static void init() {
