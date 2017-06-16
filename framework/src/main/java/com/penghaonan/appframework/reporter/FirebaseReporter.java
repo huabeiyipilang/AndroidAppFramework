@@ -9,7 +9,7 @@ import com.penghaonan.appframework.AppDelegate;
 
 import java.util.HashMap;
 
-class FirebaseReporter implements IReporter {
+public class FirebaseReporter implements IReporter {
 
     private FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(AppDelegate.getApp());
 
