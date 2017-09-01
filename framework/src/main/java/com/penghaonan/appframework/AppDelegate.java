@@ -15,6 +15,7 @@ public class AppDelegate {
     private static AppDelegate sInstance;
     private Handler mHandler;
     private Application mAppContext;
+    private static boolean mIsDebug;
 
     /**
      * 在应用Application.onCreate()方法中调用
@@ -23,6 +24,15 @@ public class AppDelegate {
         sInstance = new AppDelegate(application);
         Reporter.init();
         return sInstance;
+    }
+
+    public static void setDebug(boolean isDebug) {
+        mIsDebug = isDebug;
+        Logger.setEnable(isDebug);
+    }
+
+    public static boolean isDebug() {
+        return mIsDebug;
     }
 
     private AppDelegate(Application application) {
