@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import com.penghaonan.appframework.reporter.Reporter;
 
-import butterknife.ButterKnife;
-
 abstract public class BaseFrameworkFragment extends Fragment {
     private View mRootView;
 
@@ -21,7 +19,6 @@ abstract public class BaseFrameworkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(getLayoutRes(), container, false);
-        ButterKnife.bind(this, mRootView);
         initViews(mRootView);
         initDatas();
         return mRootView;
