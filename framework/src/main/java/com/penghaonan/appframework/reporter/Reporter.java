@@ -41,7 +41,7 @@ public class Reporter implements IReporter {
                 return;
             }
             if (mReporters.contains(reporter)) {
-                Logger.e("addReporter: reporter is null");
+                Logger.e("addReporter: reporter has been added!");
             } else {
                 mReporters.add(reporter);
                 setChannel(getChannel(AppDelegate.getApp()));
