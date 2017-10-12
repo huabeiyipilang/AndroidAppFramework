@@ -6,6 +6,10 @@ public class Logger {
     private final static String DEF_TAG = Logger.class.getSimpleName();
     private static boolean enable;
 
+    public static boolean isDebug() {
+        return enable;
+    }
+
     public static void setEnable(boolean enable) {
         Logger.enable = enable;
     }
