@@ -10,8 +10,12 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.penghaonan.appframework.AppDelegate;
+
+import java.io.IOException;
 
 public class BitmapUtils {
     public static Bitmap rotate(Bitmap bm, final int orientationDegree, Bitmap.Config config) {
@@ -132,5 +136,15 @@ public class BitmapUtils {
             return result;
         }
         return bm;
+    }
+
+    public static Bitmap loadBitmap(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(AppDelegate.getApp().getContentResolver(), uri);
+            return bitmap;
+        } catch (IOException e) {
+            Logger.e(e);
+        }
+        return null;
     }
 }
