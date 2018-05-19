@@ -13,8 +13,8 @@ setting.gradle
 
 主模块build.gradle	
 
-    compile project(':framework')
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation project(':framework')
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 Application类onCreate中

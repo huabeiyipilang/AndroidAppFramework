@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile files('lib/nineoldandroids-2.4.0.jar')
-    provided 'com.android.support:appcompat-v7:25.3.0'
+    implementation files('lib/nineoldandroids-2.4.0.jar')
+    compileOnly 'com.android.support:appcompat-v7:25.3.0'
 }
