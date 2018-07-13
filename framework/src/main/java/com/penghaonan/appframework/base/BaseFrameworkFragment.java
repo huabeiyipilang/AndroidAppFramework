@@ -57,4 +57,9 @@ abstract public class BaseFrameworkFragment extends Fragment {
     abstract public void initViews(View root);
 
     abstract public void initDatas();
+
+    /**
+     * 用于页面展示上报
+     */
+    abstract public String getFragmentName();
 }

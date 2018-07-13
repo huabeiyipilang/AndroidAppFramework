@@ -5,15 +5,15 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
 import com.penghaonan.appframework.AppDelegate;
+import com.penghaonan.appframework.base.BaseFrameworkFragment;
 import com.penghaonan.appframework.utils.Logger;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -53,7 +53,9 @@ public class Reporter implements IReporter {
         try {
             PackageManager pm = context.getPackageManager();
             ApplicationInfo appInfo = pm.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            return appInfo.metaData.getString("apk_channel");
+            if (appInfo != null && appInfo.metaData != null) {
+                return appInfo.metaData.getString("apk_channel");
+            }
         } catch (PackageManager.NameNotFoundException ignored) {
         }
         return "unknown";
@@ -77,7 +79,7 @@ public class Reporter implements IReporter {
     }
 
     @Override
-    public void onFragmentResume(@NonNull Fragment fragment) {
+    public void onFragmentResume(@NonNull BaseFrameworkFragment fragment) {
         synchronized (mReporters) {
             for (IReporter reporter : mReporters) {
                 reporter.onFragmentResume(fragment);
@@ -86,7 +88,7 @@ public class Reporter implements IReporter {
     }
 
     @Override
-    public void onFragmentPause(@NonNull Fragment fragment) {
+    public void onFragmentPause(@NonNull BaseFrameworkFragment fragment) {
         synchronized (mReporters) {
             for (IReporter reporter : mReporters) {
                 reporter.onFragmentPause(fragment);
@@ -115,7 +117,7 @@ public class Reporter implements IReporter {
     }
 
     @Override
-    public void onEvent(String eventId, HashMap<String, String> values) {
+    public void onEvent(String eventId, Map<String, String> values) {
         synchronized (mReporters) {
             Logger.i("onEvent:" + eventId + ", with values");
             for (IReporter reporter : mReporters) {

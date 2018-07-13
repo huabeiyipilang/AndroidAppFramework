@@ -2,9 +2,10 @@ package com.penghaonan.appframework.reporter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
-import java.util.HashMap;
+import com.penghaonan.appframework.base.BaseFrameworkFragment;
+
+import java.util.Map;
 
 /**
  * 客户端自定义上报，需实现此接口
@@ -29,12 +30,12 @@ public interface IReporter {
     /**
      * 框架调用（需继承BaseFrameworkFragment）
      */
-    void onFragmentResume(@NonNull Fragment fragment);
+    void onFragmentResume(@NonNull BaseFrameworkFragment fragment);
 
     /**
      * 框架调用（需继承BaseFrameworkFragment）
      */
-    void onFragmentPause(@NonNull Fragment fragment);
+    void onFragmentPause(@NonNull BaseFrameworkFragment fragment);
 
     /**
      * 计数事件
@@ -49,5 +50,5 @@ public interface IReporter {
     /**
      * 计数事件
      */
-    void onEvent(String eventId, HashMap<String, String> values);
+    void onEvent(String eventId, Map<String, String> values);
 }
