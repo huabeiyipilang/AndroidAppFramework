@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -15,7 +16,7 @@ import com.penghaonan.appframework.AppDelegate;
 /**
  * Created by carl on 9/16/15.
  */
-public class UiUtils {
+public class UIUtils {
 
     private static DisplayMetrics sDisplayMetrics;
 
@@ -65,6 +66,33 @@ public class UiUtils {
             if (mChildView != null) {
                 mChildView.setFitsSystemWindows(true);
             }
+        }
+    }
+
+    /**
+     * 点击态，透明度
+     * 列表中无效
+     */
+    public static void changeAlpha(View view, final float alpha) {
+        if (view != null) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getAction();
+                    Logger.i("action:" + action);
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            v.setAlpha(alpha);
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                        case MotionEvent.ACTION_OUTSIDE:
+                        case MotionEvent.ACTION_UP:
+                            v.setAlpha(1f);
+                            break;
+                    }
+                    return false;
+                }
+            });
         }
     }
 }
