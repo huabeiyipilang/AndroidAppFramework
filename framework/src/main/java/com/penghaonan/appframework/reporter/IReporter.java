@@ -1,11 +1,12 @@
 package com.penghaonan.appframework.reporter;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 
 import com.penghaonan.appframework.base.BaseFrameworkFragment;
 
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * 客户端自定义上报，需实现此接口

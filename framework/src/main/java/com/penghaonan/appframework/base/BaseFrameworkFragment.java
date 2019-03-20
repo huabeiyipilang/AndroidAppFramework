@@ -1,12 +1,13 @@
 package com.penghaonan.appframework.base;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.penghaonan.appframework.reporter.Reporter;
+
+import androidx.fragment.app.Fragment;
 
 abstract public class BaseFrameworkFragment extends Fragment {
     private View mRootView;

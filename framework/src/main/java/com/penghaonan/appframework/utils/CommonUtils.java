@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 
 import com.penghaonan.appframework.AppDelegate;
 
 import java.util.Iterator;
 import java.util.List;
+
+import androidx.core.app.ActivityCompat;
 
 public class CommonUtils {
 

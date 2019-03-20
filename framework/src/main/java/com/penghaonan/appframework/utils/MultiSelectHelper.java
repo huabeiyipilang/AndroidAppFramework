@@ -1,15 +1,12 @@
 package com.penghaonan.appframework.utils;
 
-import android.support.annotation.NonNull;
-import android.util.SparseBooleanArray;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public class MultiSelectHelper<T> {
     private final List<Integer> checkedArray = new LinkedList<>();
