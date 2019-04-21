@@ -39,4 +39,12 @@ public class GlobalConfig {
     public static long getLong(String key, long def) {
         return sPref.getLong(key, def);
     }
+
+    public static void put(String key, int value) {
+        sPref.edit().putLong(key, value).apply();
+    }
+
+    public static int getInt(String key, int def) {
+        return sPref.getInt(key, def);
+    }
 }
