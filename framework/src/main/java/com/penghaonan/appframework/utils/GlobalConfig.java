@@ -41,7 +41,7 @@ public class GlobalConfig {
     }
 
     public static void put(String key, int value) {
-        sPref.edit().putLong(key, value).apply();
+        sPref.edit().putInt(key, value).apply();
     }
 
     public static int getInt(String key, int def) {
