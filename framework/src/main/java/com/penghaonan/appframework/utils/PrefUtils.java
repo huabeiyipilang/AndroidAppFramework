@@ -5,11 +5,11 @@ import android.content.SharedPreferences;
 
 import com.penghaonan.appframework.AppDelegate;
 
-public class GlobalConfig {
+public class PrefUtils {
 
     private static SharedPreferences sPref = AppDelegate.getApp().getSharedPreferences(AppDelegate.getApp().getPackageName(), Context.MODE_PRIVATE);
 
-    private GlobalConfig() {
+    private PrefUtils() {
     }
 
     public static SharedPreferences getDefault() {
@@ -47,4 +47,6 @@ public class GlobalConfig {
     public static int getInt(String key, int def) {
         return sPref.getInt(key, def);
     }
+
+
 }
