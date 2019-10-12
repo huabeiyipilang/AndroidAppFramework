@@ -14,9 +14,6 @@ setting.gradle
 主模块build.gradle	
 
     implementation project(':framework')
-    //ButterKnife
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
 Application类onCreate中
 
