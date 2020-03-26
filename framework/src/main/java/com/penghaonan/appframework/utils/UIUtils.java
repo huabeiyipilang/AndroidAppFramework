@@ -2,13 +2,17 @@ package com.penghaonan.appframework.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.RequiresApi;
 
 import com.penghaonan.appframework.AppDelegate;
 
@@ -19,13 +23,13 @@ public class UIUtils {
 
     private static DisplayMetrics sDisplayMetrics;
 
-    public static int dip2Px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int dip2Px(float dpValue) {
+        final float scale = AppDelegate.getApp().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public static int px2Dip(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int px2Dip(float pxValue) {
+        final float scale = AppDelegate.getApp().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
@@ -37,6 +41,56 @@ public class UIUtils {
             sDisplayMetrics = metric;
         }
         return sDisplayMetrics.widthPixels;
+    }
+
+    public static int getWindowHeight() {
+        if (sDisplayMetrics == null) {
+            DisplayMetrics metric = new DisplayMetrics();
+            WindowManager wm = (WindowManager) AppDelegate.getApp().getSystemService(Context.WINDOW_SERVICE);
+            wm.getDefaultDisplay().getMetrics(metric);
+            sDisplayMetrics = metric;
+        }
+        return sDisplayMetrics.heightPixels;
+    }
+
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = AppDelegate.getApp().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = AppDelegate.getApp().getResources().getDimensionPixelOffset(resourceId);
+        }
+
+        return result;
+    }
+
+    public static int getNavigationBarHeight() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (!hasSoftKeys((WindowManager) AppDelegate.getApp().getSystemService(Context.WINDOW_SERVICE))) {
+                return 0;
+            }
+        }
+        Resources resources = AppDelegate.getApp().getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        return resources.getDimensionPixelSize(resourceId);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private static boolean hasSoftKeys(WindowManager windowManager) {
+        Display d = windowManager.getDefaultDisplay();
+
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        d.getRealMetrics(realDisplayMetrics);
+
+        int realHeight = realDisplayMetrics.heightPixels;
+        int realWidth = realDisplayMetrics.widthPixels;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        d.getMetrics(displayMetrics);
+
+        int displayHeight = displayMetrics.heightPixels;
+        int displayWidth = displayMetrics.widthPixels;
+
+        return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
     }
 
     /**
