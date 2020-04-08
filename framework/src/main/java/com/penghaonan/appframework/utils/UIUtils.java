@@ -148,4 +148,8 @@ public class UIUtils {
             });
         }
     }
+
+    public static ViewGroup.LayoutParams getWrapLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
 }
