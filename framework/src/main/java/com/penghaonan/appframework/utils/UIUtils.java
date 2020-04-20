@@ -152,4 +152,8 @@ public class UIUtils {
     public static ViewGroup.LayoutParams getWrapLayoutParams() {
         return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
+
+    public static ViewGroup.LayoutParams getMatchWrapLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
 }
