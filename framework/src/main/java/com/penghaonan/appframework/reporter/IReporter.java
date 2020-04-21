@@ -41,15 +41,15 @@ public interface IReporter {
     /**
      * 计数事件
      */
-    void onEvent(String eventId);
+    void reportEvent(String eventId);
 
     /**
      * 计数事件
      */
-    void onEvent(String eventId, String value);
+    void reportEvent(String eventId, String value);
 
     /**
      * 计数事件
      */
-    void onEvent(String eventId, Map<String, String> values);
+    void reportEvent(String eventId, Map<String, String> values);
 }

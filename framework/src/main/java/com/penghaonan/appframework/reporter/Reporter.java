@@ -98,31 +98,31 @@ public class Reporter implements IReporter {
     }
 
     @Override
-    public void onEvent(String eventId) {
+    public void reportEvent(String eventId) {
         synchronized (mReporters) {
             Logger.i("onEvent:" + eventId);
             for (IReporter reporter : mReporters) {
-                reporter.onEvent(eventId);
+                reporter.reportEvent(eventId);
             }
         }
     }
 
     @Override
-    public void onEvent(String eventId, String value) {
+    public void reportEvent(String eventId, String value) {
         synchronized (mReporters) {
             Logger.i("onEvent:" + eventId + ", value:" + value);
             for (IReporter reporter : mReporters) {
-                reporter.onEvent(eventId, value);
+                reporter.reportEvent(eventId, value);
             }
         }
     }
 
     @Override
-    public void onEvent(String eventId, Map<String, String> values) {
+    public void reportEvent(String eventId, Map<String, String> values) {
         synchronized (mReporters) {
             Logger.i("onEvent:" + eventId + ", with values");
             for (IReporter reporter : mReporters) {
-                reporter.onEvent(eventId, values);
+                reporter.reportEvent(eventId, values);
             }
         }
     }
