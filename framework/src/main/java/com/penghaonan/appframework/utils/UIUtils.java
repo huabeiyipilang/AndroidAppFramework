@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -11,10 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.text.HtmlCompat;
 
 import com.penghaonan.appframework.AppDelegate;
+
+import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
 /**
  * Created by carl on 9/16/15.
@@ -155,5 +160,13 @@ public class UIUtils {
 
     public static ViewGroup.LayoutParams getMatchWrapLayoutParams() {
         return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    public static void setHtmlText(TextView textView, String html) {
+        if (textView == null) {
+            return;
+        }
+        textView.setText(HtmlCompat.fromHtml(html, FROM_HTML_MODE_LEGACY));
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
