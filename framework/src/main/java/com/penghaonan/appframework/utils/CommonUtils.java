@@ -1,5 +1,6 @@
 package com.penghaonan.appframework.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -7,6 +8,9 @@ import android.content.pm.PackageManager;
 
 import com.penghaonan.appframework.AppDelegate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,10 +21,19 @@ public class CommonUtils {
     /**
      * 检查需要的权限
      */
+    public static void checkPermission(Activity activity, String[] permissions) {
+        if (permissions == null) {
+            return;
+        }
+
+        checkPermission(activity, Arrays.asList(permissions));
+    }
+
     public static void checkPermission(Activity activity, List<String> permissions) {
         if (activity == null || CollectionUtils.isEmpty(permissions)) {
             return;
         }
+        permissions = new ArrayList<>(permissions);
         Iterator<String> iterator = permissions.iterator();
         while (iterator.hasNext()) {
             String permission = iterator.next();
@@ -31,6 +44,10 @@ public class CommonUtils {
         if (!CollectionUtils.isEmpty(permissions)) {
             ActivityCompat.requestPermissions(activity, permissions.toArray(new String[0]), 1);
         }
+    }
+
+    public static boolean hasPermission(String permission) {
+        return ActivityCompat.checkSelfPermission(AppDelegate.getApp(), permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**

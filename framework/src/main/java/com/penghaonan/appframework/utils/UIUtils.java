@@ -1,8 +1,13 @@
 package com.penghaonan.appframework.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -12,12 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import com.penghaonan.appframework.AppDelegate;
+import com.penghaonan.appframework.R;
 
 import static androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY;
 
@@ -168,5 +178,65 @@ public class UIUtils {
         }
         textView.setText(HtmlCompat.fromHtml(html, FROM_HTML_MODE_LEGACY));
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public static void setHintText(EditText editText, String html) {
+        if (editText == null) {
+            return;
+        }
+        editText.setHint(HtmlCompat.fromHtml(html, FROM_HTML_MODE_LEGACY));
+        editText.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public static ValueAnimator createViewBackgroundGuideAnim(View view, int startColor, int endColor, int cycleCount, long duration) {
+        if (view == null) {
+            return null;
+        }
+        Object object = view.getTag(R.id.framework_guide_anim);
+        if (object instanceof ValueAnimator) {
+            ValueAnimator valueAnimator = (ValueAnimator) object;
+            valueAnimator.cancel();
+            view.setTag(R.id.framework_guide_anim, null);
+            view.setTag(R.id.framework_guide_anim_count, null);
+        }
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float progress = (float) valueAnimator.getAnimatedValue();
+                int color;
+                if (progress < 0.5f) {
+                    color = ColorUtils.blendARGB(startColor, endColor, progress);
+                } else {
+                    color = ColorUtils.blendARGB(startColor, endColor, 1 - progress);
+                }
+                view.setBackgroundColor(color);
+            }
+        });
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                Object object = view.getTag(R.id.framework_guide_anim_count);
+                int count = 0;
+                if (object != null) {
+                    try {
+                        count = (int) object;
+                    } catch (Exception ignore) {
+                    }
+                }
+                count++;
+                if (count < cycleCount) {
+                    view.setTag(R.id.framework_guide_anim_count, count);
+                    valueAnimator.start();
+                } else {
+                    view.setTag(R.id.framework_guide_anim, null);
+                    view.setTag(R.id.framework_guide_anim_count, null);
+                }
+            }
+        });
+        valueAnimator.setDuration(duration);
+        view.setTag(R.id.framework_guide_anim, valueAnimator);
+        return valueAnimator;
     }
 }
