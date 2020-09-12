@@ -9,13 +9,16 @@ import android.os.Looper;
 
 import com.penghaonan.appframework.reporter.Reporter;
 import com.penghaonan.appframework.utils.Logger;
+import com.penghaonan.appframework.utils.threadpool.IOThreadPool;
+import com.penghaonan.appframework.utils.threadpool.ThreadPoolTask;
 
 public class AppDelegate {
 
     private static AppDelegate sInstance;
-    private Handler mHandler;
-    private Application mAppContext;
+    private static Handler mHandler;
+    private static Application mAppContext;
     private static boolean mIsDebug;
+    private static IOThreadPool threadPool;
 
     /**
      * 在应用Application.onCreate()方法中调用
@@ -23,6 +26,7 @@ public class AppDelegate {
     public static AppDelegate init(Application application) {
         sInstance = new AppDelegate(application);
         Reporter.init();
+        threadPool = new IOThreadPool();
         return sInstance;
     }
 
@@ -80,7 +84,7 @@ public class AppDelegate {
      * 获取全局Application
      */
     public static Application getApp() {
-        return getInstance().mAppContext;
+        return mAppContext;
     }
 
     /**
@@ -88,6 +92,10 @@ public class AppDelegate {
      */
     public static String getString(int resId) {
         return getApp().getString(resId);
+    }
+
+    public static String getString(int resId, Object... formatArgs) {
+        return getApp().getString(resId, formatArgs);
     }
 
     /**
@@ -101,21 +109,29 @@ public class AppDelegate {
      * 主线程执行
      */
     public static void post(Runnable runnable) {
-        getInstance().mHandler.post(runnable);
+        mHandler.post(runnable);
     }
 
     /**
      * 主线程延迟执行
      */
     public static void postDelayed(Runnable runnable, long delay) {
-        getInstance().mHandler.postDelayed(runnable, delay);
+        mHandler.postDelayed(runnable, delay);
     }
 
     /**
      * 取消执行
      */
     public static void removeCallbacks(Runnable runnable) {
-        getInstance().mHandler.removeCallbacks(runnable);
+        mHandler.removeCallbacks(runnable);
+    }
+
+    public static void postAsync(ThreadPoolTask task) {
+        threadPool.addTask(task);
+    }
+
+    public static void cancelAsync(ThreadPoolTask task) {
+        threadPool.cancel(task);
     }
 
     /**
@@ -123,10 +139,14 @@ public class AppDelegate {
      */
     public static void startActivity(Class<? extends Activity> activityCls, Bundle bundle) {
         Intent intent = new Intent(getApp(), activityCls);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (bundle != null) {
             intent.putExtras(bundle);
         }
+        startActivity(intent);
+    }
+
+    public static void startActivity(Intent intent) {
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApp().startActivity(intent);
     }
 }
