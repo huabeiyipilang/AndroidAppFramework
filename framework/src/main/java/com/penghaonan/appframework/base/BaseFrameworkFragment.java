@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.penghaonan.appframework.reporter.Reporter;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 abstract public class BaseFrameworkFragment extends Fragment {
     private View mRootView;
@@ -63,4 +64,12 @@ abstract public class BaseFrameworkFragment extends Fragment {
      * 用于页面展示上报
      */
     abstract public String getFragmentName();
+
+    public BaseFrameworkActivity getBaseActivity() {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof BaseFrameworkActivity) {
+            return (BaseFrameworkActivity) activity;
+        }
+        return null;
+    }
 }
