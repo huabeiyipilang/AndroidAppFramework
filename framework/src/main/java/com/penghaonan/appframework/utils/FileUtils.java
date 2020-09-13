@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
+import androidx.core.content.FileProvider;
+
 import com.penghaonan.appframework.AppDelegate;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Locale;
 
 public class FileUtils {
@@ -69,7 +73,10 @@ public class FileUtils {
     }
 
     public interface CopyFileListener {
-        void onProgress(float progress);
+        /**
+         * @return true abort
+         */
+        boolean onProgress(float progress);
     }
 
     public static boolean copyFile(File fileFrom, File fileTo, CopyFileListener listener) {
@@ -88,7 +95,10 @@ public class FileUtils {
                     Logger.i(TAG, bytesum + " / " + fileFrom.length());
                     fs.write(buffer, 0, byteread);
                     if (listener != null) {
-                        listener.onProgress(((float) bytesum) / fileFrom.length());
+                        boolean abort = listener.onProgress(((float) bytesum) / fileFrom.length());
+                        if (abort) {
+                            break;
+                        }
                     }
                 }
                 inStream.close();
@@ -123,5 +133,40 @@ public class FileUtils {
 //        } catch (ActivityNotFoundException e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public static String getFileMD5(File file) {
+        return getFileMD5(file, 16);
+    }
+
+    public static String getFileMD5(File file, int radix) {
+        if (file == null || !file.isFile() || !file.exists()) {
+            return null;
+        }
+        MessageDigest digest = null;
+        FileInputStream in = null;
+        byte buffer[] = new byte[1024];
+        int len;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            in = new FileInputStream(file);
+            while ((len = in.read(buffer, 0, 1024)) != -1) {
+                digest.update(buffer, 0, len);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(radix);
+    }
+
+    public static String getAuthority() {
+        return AppDelegate.getApp().getPackageName() + ".fileprovider";
+    }
+
+    public static Uri uriFromFile(File file) {
+        return FileProvider.getUriForFile(AppDelegate.getApp(), getAuthority(), file);
     }
 }
