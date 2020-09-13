@@ -2,7 +2,9 @@ package com.penghaonan.appframework.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import androidx.core.content.FileProvider;
@@ -11,7 +13,9 @@ import com.penghaonan.appframework.AppDelegate;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -70,6 +74,13 @@ public class FileUtils {
             return type;
         }
         return def;
+    }
+
+    public static boolean compareFile(File file1, File file2) {
+        if (file1 == null || file2 == null || !file1.exists() || !file2.exists()) {
+            return false;
+        }
+        return file1.length() == file2.length() && TextUtils.equals(FileUtils.getFileMD5(file1), FileUtils.getFileMD5(file2));
     }
 
     public interface CopyFileListener {
@@ -168,5 +179,35 @@ public class FileUtils {
 
     public static Uri uriFromFile(File file) {
         return FileProvider.getUriForFile(AppDelegate.getApp(), getAuthority(), file);
+    }
+
+    public static boolean saveBitmapToFile(Bitmap bitmap, File file) {
+        if (file == null) {
+            return false;
+        }
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(file);
+            if (bitmap != null) {
+                if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)) {
+                    fileOutputStream.flush();
+                    return true;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }
