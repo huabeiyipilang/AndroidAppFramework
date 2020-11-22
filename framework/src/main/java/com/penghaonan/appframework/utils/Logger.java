@@ -1,5 +1,6 @@
 package com.penghaonan.appframework.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 public class Logger {
@@ -58,6 +59,9 @@ public class Logger {
 
     private static String getFileName(StackTraceElement element) {
         String fileName = element.getFileName();
+        if (TextUtils.isEmpty(fileName)) {
+            return "";
+        }
         return fileName.substring(0, fileName.indexOf("."));
     }
 }
