@@ -1,26 +1,29 @@
 package com.penghaonan.appframework.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import androidx.core.app.ActivityCompat;
+
 import com.penghaonan.appframework.AppDelegate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.core.app.ActivityCompat;
 
 public class CommonUtils {
 
     /**
      * 检查需要的权限
      */
+    public static void checkPermission(Activity activity, String permission) {
+        String[] permissions = new String[]{permission};
+        checkPermission(activity, permissions);
+    }
+
     public static void checkPermission(Activity activity, String[] permissions) {
         if (permissions == null) {
             return;
