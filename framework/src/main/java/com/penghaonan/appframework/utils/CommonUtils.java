@@ -16,6 +16,8 @@ import java.util.List;
 
 public class CommonUtils {
 
+    public final static int REQUEST_CODE_PERMISSION = 1000;
+
     /**
      * 检查需要的权限
      */
@@ -45,7 +47,7 @@ public class CommonUtils {
             }
         }
         if (!CollectionUtils.isEmpty(permissions)) {
-            ActivityCompat.requestPermissions(activity, permissions.toArray(new String[0]), 1);
+            ActivityCompat.requestPermissions(activity, permissions.toArray(new String[0]), REQUEST_CODE_PERMISSION);
         }
     }
 
