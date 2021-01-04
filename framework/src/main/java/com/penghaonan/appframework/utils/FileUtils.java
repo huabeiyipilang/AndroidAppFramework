@@ -1,6 +1,7 @@
 package com.penghaonan.appframework.utils;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,12 +12,14 @@ import androidx.core.content.FileProvider;
 
 import com.penghaonan.appframework.AppDelegate;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Locale;
@@ -209,5 +212,24 @@ public class FileUtils {
             }
         }
         return false;
+    }
+
+    public static String readStringFromAssets(String fileName) {
+        String str = "";
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(AppDelegate.getApp().getAssets().open(fileName), "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            bufferedReader.close();
+            inputStreamReader.close();
+            str = stringBuilder.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
     }
 }
