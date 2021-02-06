@@ -20,6 +20,10 @@ public class PrefUtils {
         sPref.edit().putBoolean(key, value).apply();
     }
 
+    public static boolean containsKey(String key) {
+        return sPref.contains(key);
+    }
+
     public static boolean getBoolean(String key) {
         return getBoolean(key, false);
     }
