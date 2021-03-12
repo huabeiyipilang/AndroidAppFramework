@@ -26,4 +26,12 @@ public class BaseFrameworkActivity extends AppCompatActivity {
         }
         return this.listViewThreadPool;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (listViewThreadPool != null) {
+            listViewThreadPool.stop(true);
+        }
+    }
 }
