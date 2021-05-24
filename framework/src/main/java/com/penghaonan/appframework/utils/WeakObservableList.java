@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class WeakObservable<T> {
-    private List<CustomWeakReference> observerList = new LinkedList<>();
+public class WeakObservableList<T> {
+    private final List<CustomWeakReference> observerList = new LinkedList<>();
 
     /**
      * 注册监听
@@ -14,7 +14,7 @@ public abstract class WeakObservable<T> {
      * @param listener
      */
     public void registerListener(T listener) {
-        iterate(new OnIterator() {
+        iterate(new OnIterator<T>() {
             private boolean needAdd = true;
 
             @Override
@@ -41,7 +41,7 @@ public abstract class WeakObservable<T> {
      * @param listener
      */
     public void unregisterListener(T listener) {
-        iterate(new OnIterator() {
+        iterate(new OnIterator<T>() {
             @Override
             protected boolean onIterator(T item) {
                 if (listener == item) {
@@ -56,7 +56,7 @@ public abstract class WeakObservable<T> {
     /**
      * 遍历回调
      */
-    public abstract class OnIterator {
+    public static abstract class OnIterator<T> {
         Iterator<CustomWeakReference> iterator;
 
         protected void onStart() {
@@ -85,7 +85,7 @@ public abstract class WeakObservable<T> {
         while (iterator.hasNext()) {
             CustomWeakReference reference = iterator.next();
             T keptObj = (T) reference.get();
-            if (reference.get() == null) {
+            if (reference.get() == null || keptObj == null) {
                 iterator.remove();
             } else {
                 onIterator.onIterator(keptObj);

@@ -16,6 +16,10 @@ public class PrefUtils {
         return sPref;
     }
 
+    public static SharedPreferences getPref(String pref) {
+        return AppDelegate.getApp().getSharedPreferences(pref, Context.MODE_PRIVATE);
+    }
+
     public static void put(String key, boolean value) {
         sPref.edit().putBoolean(key, value).apply();
     }
