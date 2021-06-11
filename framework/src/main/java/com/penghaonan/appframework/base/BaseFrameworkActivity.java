@@ -3,10 +3,11 @@ package com.penghaonan.appframework.base;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.penghaonan.appframework.reporter.Reporter;
-import com.penghaonan.appframework.utils.threadpool.ListViewThreadPool;
+import com.penghaonan.appframework.utils.threadpool.IThreadPoolHolder;
+import com.penghaonan.appframework.utils.threadpool.UIThreadPool;
 
-public class BaseFrameworkActivity extends AppCompatActivity {
-    private ListViewThreadPool listViewThreadPool;
+public class BaseFrameworkActivity extends AppCompatActivity implements IThreadPoolHolder {
+    private UIThreadPool uiThreadPool;
 
     @Override
     protected void onResume() {
@@ -20,18 +21,19 @@ public class BaseFrameworkActivity extends AppCompatActivity {
         Reporter.getInstance().onActivityPause(this);
     }
 
-    public ListViewThreadPool getListViewThreadPool() {
-        if (this.listViewThreadPool == null) {
-            this.listViewThreadPool = new ListViewThreadPool();
+    @Override
+    public UIThreadPool getUIThreadPool() {
+        if (this.uiThreadPool == null) {
+            this.uiThreadPool = new UIThreadPool();
         }
-        return this.listViewThreadPool;
+        return this.uiThreadPool;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (listViewThreadPool != null) {
-            listViewThreadPool.stop(true);
+        if (uiThreadPool != null) {
+            uiThreadPool.stop(true);
         }
     }
 }

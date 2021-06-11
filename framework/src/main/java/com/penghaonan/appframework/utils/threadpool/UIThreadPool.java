@@ -5,7 +5,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class ListViewThreadPool extends AThreadPool {
+public class UIThreadPool extends AThreadPool {
     public ThreadPoolExecutor createThreadPoolExecutor(BlockingQueue<Runnable> queue, RejectedExecutionHandler handler) {
         return new ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, queue, handler);
     }
